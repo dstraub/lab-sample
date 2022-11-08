@@ -1,0 +1,27 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: webserver
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  template:
+    spec:
+      containers:
+      - name: webserver
+        image: webserver
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - name: webserver-env
+          mountPath: /usr/share/nginx/html/env.properties
+          subPath: env.properties
+      volumes:
+      - name: webserver-env
+        configMap:
+          name: webserver
+          items:
+          - key: env.properties
+            path: env.properties

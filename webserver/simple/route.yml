@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: webserver
+  labels:
+    app: webserver
+  name: webserver
+spec:
+  host: do180.apps.eu410.prod.nextcle.com
+  to:
+    kind: Service
+    name: webserver
+  port:
+    targetPort: http

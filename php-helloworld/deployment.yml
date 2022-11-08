@@ -1,0 +1,33 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: php-helloworld
+  name: php-helloworld
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php-helloworld
+  template:
+    metadata:
+      labels:
+        app: php-helloworld
+    spec:
+      containers:
+      - name: php-helloworld
+        image: quay.io/redhattraining/php-hello-dockerfile
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+            scheme: HTTP
+          periodSeconds: 30
+          failureThreshold: 3
+          successThreshold: 1
+          timeoutSeconds: 1
+

@@ -1,0 +1,30 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+- ../../base
+
+namespace: stage-test
+
+commonLabels:
+  app.kubernetes.io/instance: webserver
+
+images:
+- name: webserver
+  newName: quay.io/danielstraub/webserver
+  newTag: "1.0"
+
+configMapGenerator:
+- name: webserver
+  files: 
+  - env.properties
+
+patches:
+- patch: |-
+    kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: webserver
+    spec:
+      host: stage-test.apps.eu410.prod.nextcle.com
+

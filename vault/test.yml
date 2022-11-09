@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+spec:
+  replicas: 1
+  restartPolicy: Never
+  template:
+    spec:
+      serviceAccountName: do180
+      initContainers:
+      - name: token
+        image: quay.io/danielstraub/vault
+        command:
+        - bash
+        args: 
+        - -c
+        - |
+         SA_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+         VAULT_TOKEN=$(curl -s vault/v1/auth/kubernetes/login -d "{\"jwt\":\"$SA_TOKEN\",\"role\":\"do180\"}" | jq -r .auth.client_token)
+         curl -s -H "Authorization: Bearer $VAULT_TOKEN" vault/v1/do180/data/trainer | jq .data.data > /data/trainer.json
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      containers:
+      - name: test
+        image: quay.io/danielstraub/vault
+        command:
+        - bash
+        args: 
+        - -c
+        - "sleep infinity"
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      volumes:
+      - name: data
+        emptyDir: {}
+
+

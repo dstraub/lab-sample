@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# run as root or with sudo ...
+
+set -eu
+
+CONTAINER=$(buildah from scratch)
+FS_ROOT=$(buildah mount $CONTAINER)
+
+dnf install -y --installroot $FS_ROOT --releasever 8 --nodocs --quiet --setopt=install_weak_deps=False glibc-minimal-langpack jq bash curl
+
+curl -sL https://releases.hashicorp.com/vault/1.12.1/vault_1.12.1_linux_amd64.zip -o /tmp/vault.zip
+unzip /tmp/vault.zip -d $FS_ROOT/usr/local/bin
+chmod +x $FS_ROOT/usr/local/bin/vault
+rm -f /tmp/vault.zip
+
+buildah commit --quiet --rm --squash $CONTAINER quay.io/danielstraub/vault
+podman push quay.io/danielstraub/vault
+

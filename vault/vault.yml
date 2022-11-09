@@ -6,6 +6,7 @@ spec:
   replicas: 1
   template:
     spec:
+      serviceAccountName: do180
       containers:
       - name: vault
         image: quay.io/danielstraub/vault
@@ -13,8 +14,7 @@ spec:
         - vault
         args: 
         - server
-        - -config 
-        - /etc/vault/vault.conf
+        - -config=/etc/vault/vault.conf
         env:
         - name: VAULT_LOG_LEVEL
           value: info
@@ -25,16 +25,17 @@ spec:
         volumeMounts:
         - name: vault-data
           mountPath: /var/lib/vault
-        - name: vault-config
+        - name: vault-conf
           mountPath: /etc/vault
           readonly: true
       volumes:
       - name: vault-data
         persistentVolumeClaim:
           claimName: vault
-      - name: vault-config
-        secret:
-          secretName: vault
+      - name: vault-conf
+        configMap:
+          name: vault
           items:
-          - key: config
+          - key: vault-server
             path: vault.conf
+

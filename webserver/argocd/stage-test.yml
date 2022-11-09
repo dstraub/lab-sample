@@ -1,3 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd
+  namespace: stage-test
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+- kind: ServiceAccount
+  namespace: openshift-gitops
+  name: openshift-gitops-argocd-application-controller
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -9,12 +23,11 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: overlays/test
-    repoURL: https://github.com/dstraub/do288-sample.git
+    path: webserver/overlays/test
+    repoURL: https://github.com/dstraub/do180-sample.git
     targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-
 

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: vault
+        image: quay.io/danielstraub/vault
+        command:
+        - vault
+        args: 
+        - server
+        - -config 
+        - /etc/vault/vault.conf
+        env:
+        - name: VAULT_LOG_LEVEL
+          value: info
+        ports:
+        - name: http
+          containerPort: 8200
+          protocol: TCP
+        volumeMounts:
+        - name: vault-data
+          mountPath: /var/lib/vault
+        - name: vault-config
+          mountPath: /etc/vault
+          readonly: true
+      volumes:
+      - name: vault-data
+        persistentVolumeClaim:
+          claimName: vault
+      - name: vault-config
+        secret:
+          secretName: vault
+          items:
+          - key: config
+            path: vault.conf

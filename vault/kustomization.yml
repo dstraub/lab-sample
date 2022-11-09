@@ -1,0 +1,19 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+- deployment.yml
+- service.yml
+- route.yml
+- pvc.yml
+
+namespace: do180-huk
+
+commonLabels:
+  app.kubernetes.io/instance: vault
+
+secretGenerator:
+- name: vault
+  files:
+  - config 
+

@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: vault
+spec:
+  host: vault-huk.apps.eu410.prod.nextcle.com
+  to:
+    kind: Service
+    name: vault
+  port:
+    targetPort: http
+  tls:
+    termination: edge   

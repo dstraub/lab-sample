@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for I in {0..1};do
+  KEY=$(jq -r ".keys[$I]" /home/student/.vault.json)
+  curl -s -XPUT -H 'Content-Type: application/json' https://vault.apps.ocp4.example.com/v1/sys/unseal -d "{\"key\": \"$KEY\"}" 
+done

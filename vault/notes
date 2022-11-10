@@ -1,0 +1,76 @@
+
+Setup: 
+https://developer.hashicorp.com/vault/tutorials/auth-methods/agent-kubernetes
+https://developer.hashicorp.com/vault/docs/auth/kubernetes
+
+
+============
+ROOT_TOKEN=$(jq -r .root_token /home/student/.vault.json)
+
+curl -s -H "Authorization: Bearer $ROOT_TOKEN" https://vault.apps.ocp4.example.com/v1/auth/kubernetes/config | jq .data
+{
+  "disable_iss_validation": true,
+  "disable_local_ca_jwt": false,
+  "issuer": "",
+  "kubernetes_ca_cert": "",
+  "kubernetes_host": "https://172.30.0.1",
+  "pem_keys": []
+}
+
+
+curl -s -H "Authorization: Bearer $ROOT_TOKEN" https://vault.apps.ocp4.example.com/v1/auth/kubernetes/role/do180 | jq .data
+{
+  "alias_name_source": "serviceaccount_uid",
+  "bound_service_account_names": [
+    "do180"
+  ],
+  "bound_service_account_namespaces": [
+    "do180"
+  ],
+  "policies": [
+    "do180"
+  ],
+  "token_bound_cidrs": [],
+  "token_explicit_max_ttl": 0,
+  "token_max_ttl": 0,
+  "token_no_default_policy": false,
+  "token_num_uses": 0,
+  "token_period": 0,
+  "token_policies": [
+    "do180"
+  ],
+  "token_ttl": 86400,
+  "token_type": "default",
+  "ttl": 86400
+}
+
+curl -s -H "Authorization: Bearer $ROOT_TOKEN" https://vault.apps.ocp4.example.com/v1/sys/policy/do180 | jq .data
+{
+  "name": "do180",
+  "rules": "path \"do180/data/*\" {\n   capabilities=[\"read\", \"list\" ] \n}\npath \"do180/metadata/*\" {\n   capabilities=[\"read\", \"list\" ]\n}"
+}
+
+curl -s -H "Authorization: Bearer $ROOT_TOKEN" https://vault.apps.ocp4.example.com/v1/do180/data/trainer | jq .data
+{
+  "data": {
+    "name": "daniel",
+    "password": "12345678"
+  },
+  "metadata": {
+    "created_time": "2022-11-09T21:36:00.967504821Z",
+    "custom_metadata": null,
+    "deletion_time": "",
+    "destroyed": false,
+    "version": 1
+  }
+}
+
+===========================
+
+SERVICE_ACCOUNT=do180
+SECRET_NAME=$(oc get sa $SERVICE_ACCOUNT -o json | jq -r ".secrets[] | select(.name|startswith(\"$SERVICE_ACCOUNT-token\")).name")
+SERVICE_ACCOUNT_TOKEN=$(oc get secret $SECRET_NAME -o jsonpath='{.data.token}' | base64 -d)
+
+VAULT_TOKEN=$(curl -s https://vault.apps.ocp4.example.com/v1/auth/kubernetes/login -d "{\"jwt\":\"$SERVICE_ACCOUNT_TOKEN\",\"role\":\"do180\"}" | jq -r .auth.client_token)
+
+curl -s -H "Authorization: Bearer $VAULT_TOKEN" https://vault.apps.ocp4.example.com/v1/do180/data/trainer | jq .data.data

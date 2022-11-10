@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent
+spec:
+  replicas: 1
+  restartPolicy: Never
+  template:
+    spec:
+      serviceAccountName: do180
+      initContainers:
+      - name: agent
+        image: quay.io/danielstraub/vault
+        command:
+        - vault
+        args: 
+        - agent
+        - -config=/etc/vault/vault.conf
+        env:
+        - name: VAULT_LOG_LEVEL
+          value: info
+        - name: VAULT_ADDR
+          value: http://vault
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: vault-conf
+          mountPath: /etc/vault
+          readonly: true
+      containers:
+      - name: test
+        image: quay.io/danielstraub/vault
+        command:
+        - bash
+        args: 
+        - -c
+        - "sleep infinity"
+        env:
+        - name: VAULT_ADDR
+          value: http://vault
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      volumes:
+      - name: data
+        emptyDir: {}
+      - name: vault-conf
+        configMap:
+          name: vault
+          items:
+          - key: vault-agent
+            path: vault.conf
+
+

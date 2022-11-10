@@ -3,7 +3,7 @@ kind: Route
 metadata:
   name: vault
 spec:
-  host: vault-huk.apps.eu410.prod.nextcle.com
+  host: vault.apps.ocp4.example.com
   to:
     kind: Service
     name: vault
@@ -11,3 +11,4 @@ spec:
     targetPort: http
   tls:
     termination: edge   
+    insecureEdgeTerminationPolicy: Redirect

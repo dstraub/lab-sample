@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# run as root or with sudo ...
+
+set -eu
+
+CONTAINER=$(buildah from scratch)
+FS_ROOT=$(buildah mount $CONTAINER)
+
+PACKAGES="
+  glibc-minimal-langpack
+  bind-utils
+  curl
+  iputils
+  jq
+  less
+  lsof
+  openssl
+  tar
+  unzip
+  vim
+"
+
+dnf install -y --installroot $FS_ROOT --releasever 8 --nodocs --quiet --setopt=install_weak_deps=False $PACKAGES
+
+buildah config --cmd /usr/bin/bash $CONTAINER
+buildah commit --quiet --rm --squash $CONTAINER toolbox
+
+podman push toolbox quay.io/danielstraub/toolbox
+

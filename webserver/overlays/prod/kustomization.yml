@@ -26,4 +26,4 @@ patches:
     metadata:
       name: webserver
     spec:
-      host: stage-prod.apps.eu410.prod.nextcle.com
+      host: stage-prod.cluster.straubcloud.de

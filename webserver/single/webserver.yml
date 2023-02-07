@@ -43,7 +43,6 @@ metadata:
   name: webserver
   labels:
     app: webserver
-  name: webserver
 spec:
   host: do180.apps.eu410.prod.nextcle.com
   to:

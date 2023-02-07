@@ -14,6 +14,20 @@ spec:
         - name: http
           containerPort: 8080
           protocol: TCP
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+        readynessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
         volumeMounts:
         - name: webserver-env
           mountPath: /usr/share/nginx/html/env.properties
@@ -25,3 +39,4 @@ spec:
           items:
           - key: env.properties
             path: env.properties
+

@@ -21,4 +21,18 @@ spec:
         - containerPort: 8080
           name: http
           protocol: TCP
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+        readynessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
 

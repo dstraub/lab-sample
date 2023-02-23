@@ -19,15 +19,15 @@ spec:
             scheme: HTTP
             path: /
             port: http
-            initialDelaySeconds: 10
-            periodSeconds: 30
-        readynessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
           httpGet:
             scheme: HTTP
             path: /
             port: http
-            initialDelaySeconds: 10
-            periodSeconds: 30
+          initialDelaySeconds: 10
+          periodSeconds: 30
         volumeMounts:
         - name: webserver-env
           mountPath: /usr/share/nginx/html/env.properties

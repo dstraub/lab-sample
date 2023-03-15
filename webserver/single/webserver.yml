@@ -58,7 +58,6 @@ metadata:
   labels:
     app: webserver
 spec:
-  host: do180.apps.eu410.prod.nextcle.com
   to:
     kind: Service
     name: webserver

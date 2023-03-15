@@ -12,7 +12,7 @@ commonLabels:
 images:
 - name: webserver
   newName: quay.io/danielstraub/webserver
-  newTag: "1.0"
+  newTag: "2.0"
 
 configMapGenerator:
 - name: webserver
@@ -20,6 +20,14 @@ configMapGenerator:
   - env.properties
 
 patches:
+- patch: |-
+    - op: add
+      path: /spec/template/spec/containers/0/env
+      value:
+      - name: COURSE
+        value: DO180-Test
+  target:
+    kind: Deployment
 - patch: |-
     kind: Route
     apiVersion: route.openshift.io/v1

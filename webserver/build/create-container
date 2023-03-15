@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# run as root or with sudo ...
+
+set -eu
+
+CONTAINER=$(buildah from scratch)
+FS_ROOT=$(buildah mount $CONTAINER)
+
+PACKAGES="
+  glibc-minimal-langpack
+  nginx
+  curl
+"
+
+dnf install -y --installroot $FS_ROOT --releasever 8 --nodocs --quiet --setopt=install_weak_deps=False $PACKAGES
+
+cp run.sh $FS_ROOT/usr/local/bin
+cp nginx.conf $FS_ROOT/etc/nginx/nginx.conf
+
+chmod -R 0770 $FS_ROOT/usr/local/bin/run.sh $FS_ROOT/usr/share/nginx/html
+rm -rf $FS_ROOT/usr/share/nginx/html/*
+
+buildah config --cmd /usr/local/bin/run.sh $CONTAINER
+buildah commit --quiet --rm --squash $CONTAINER webserver
+
+podman push webserver quay.io/danielstraub/webserver:2.0
+

@@ -10,6 +10,7 @@ spec:
       containers:
       - name: webserver
         image: webserver
+        imagePullPolicy: Always
         ports:
         - name: http
           containerPort: 8080
@@ -17,17 +18,25 @@ spec:
         livenessProbe:
           httpGet:
             scheme: HTTP
-            path: /
+            path: /healthz
             port: http
           initialDelaySeconds: 10
           periodSeconds: 30
         readinessProbe:
           httpGet:
             scheme: HTTP
-            path: /
+            path: /healthz
             port: http
           initialDelaySeconds: 10
           periodSeconds: 30
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+            - ALL
         volumeMounts:
         - name: webserver-env
           mountPath: /usr/share/nginx/html/env.properties

@@ -21,6 +21,14 @@ configMapGenerator:
 
 patches:
 - patch: |-
+    - op: add
+      path: /spec/template/spec/containers/0/env
+      value:
+      - name: COURSE
+        value: DO180-Prod
+  target:
+    kind: Deployment
+- patch: |-
     kind: Route
     apiVersion: route.openshift.io/v1
     metadata:

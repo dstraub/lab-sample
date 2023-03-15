@@ -1,22 +1,15 @@
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+apiVersion: v1
+kind: Namespace
 metadata:
-  name: argocd
-  namespace: stage-test
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: admin
-subjects:
-- kind: ServiceAccount
-  namespace: openshift-gitops
-  name: openshift-gitops-argocd-application-controller
+  labels:
+    argocd.argoproj.io/managed-by: openshift-operators
+  name: stage-test
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: stage-test
-  namespace: openshift-gitops
+  namespace: openshift-operators
 spec:
   destination:
     namespace: stage-test
@@ -24,7 +17,7 @@ spec:
   project: default
   source:
     path: webserver/overlays/test
-    repoURL: https://github.com/dstraub/do180-sample.git
+    repoURL: git@github.com:dstraub/do180-sample.git
     targetRevision: HEAD
   syncPolicy:
     automated:

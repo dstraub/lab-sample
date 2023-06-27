@@ -20,15 +20,17 @@ spec:
             scheme: HTTP
             path: /healthz
             port: http
-          initialDelaySeconds: 10
-          periodSeconds: 30
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          failureThreshold: 3
         readinessProbe:
           httpGet:
             scheme: HTTP
             path: /healthz
             port: http
-          initialDelaySeconds: 10
-          periodSeconds: 30
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          failureThreshold: 3
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true

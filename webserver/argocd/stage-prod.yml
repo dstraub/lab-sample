@@ -2,14 +2,14 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
-    argocd.argoproj.io/managed-by: openshift-operators
+    argocd.argoproj.io/managed-by: gitops
   name: stage-prod
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: stage-prod
-  namespace: openshift-operators
+  namespace: gitops
 spec:
   destination:
     namespace: stage-prod
@@ -23,4 +23,18 @@ spec:
     automated:
       prune: true
       selfHeal: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: gitops
+  namespace: stage-prod
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+- kind: ServiceAccount
+  name: gitops-argocd-application-controller
+  namespace: gitops
 

@@ -1,0 +1,7 @@
+
+image:
+  tag: "2.0"
+
+stage: prod
+
+course: DO288

@@ -1,0 +1,21 @@
+
+nameOverride: ""
+fullnameOverride: "webserver"
+
+replicaCount: 1
+
+image:
+  repository: quay.io/danielstraub/webserver
+
+route:
+  domain: cluster.straubcloud.de
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+

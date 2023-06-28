@@ -34,4 +34,5 @@ patches:
     metadata:
       name: webserver
     spec:
-      host: stage-prod.dev04.ocp.jcns.frm2.tum.de
+      host: stage-prod.cluster.straubcloud.de
+

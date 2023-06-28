@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: stage-prod
+  namespace: gitops
+spec:
+  destination:
+    namespace: stage-prod
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: webserver/helm/chart
+    repoURL: git@github.com:dstraub/do180-sample.git
+    targetRevision: HEAD
+    helm:
+      releaseName: webserver
+      valueFiles:
+      - stage-prod/values.yml 
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+

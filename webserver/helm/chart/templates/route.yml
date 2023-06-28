@@ -1,0 +1,17 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ include "webserver.fullname" . }}
+  labels:
+    {{- include "webserver.labels" . | nindent 4 }}
+spec:
+  to:
+    name: {{ include "webserver.fullname" . }}
+    kind: Service
+  host: {{ printf "stage-%s.%s" .Values.stage .Values.route.domain }}
+  port:
+    targetPort: http
+  tls:
+    termination: edge   
+    insecureEdgeTerminationPolicy: Redirect
+

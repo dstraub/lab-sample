@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "webserver.fullname" . }}
+  labels:
+    {{- include "webserver.labels" . | nindent 4 }}
+data:
+{{ (.Files.Glob (printf "stage-%s/*.properties" .Values.stage)).AsConfig | indent 2 }}

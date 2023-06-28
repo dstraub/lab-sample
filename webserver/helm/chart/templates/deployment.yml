@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "webserver.fullname" . }}
+  labels:
+    {{- include "webserver.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "webserver.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "webserver.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yml") . | sha256sum }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: Always
+        env:
+        - name: COURSE
+          value: {{ .Values.course }}
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /healthz
+            port: http
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /healthz
+            port: http
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          failureThreshold: 3
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - name: webserver-env
+          mountPath: /usr/share/nginx/html/env.properties
+          subPath: env.properties
+      volumes:
+      - name: webserver-env
+        configMap:
+          name: {{ include "webserver.fullname" . }}
+          items:
+          - key: env.properties
+            path: env.properties
+

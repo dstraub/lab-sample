@@ -1,4 +1,4 @@
-piVersion: argoproj.io/v1alpha1
+apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: stage-test
@@ -9,9 +9,13 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: webserver/overlays/test
+    path: webserver/helm/chart
     repoURL: git@github.com:dstraub/do180-sample.git
     targetRevision: HEAD
+    helm:
+      releaseName: webserver
+      valueFiles:
+      - stage-test/values.yml 
   syncPolicy:
     automated:
       prune: true

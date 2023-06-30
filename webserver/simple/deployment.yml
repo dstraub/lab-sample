@@ -33,13 +33,21 @@ spec:
             scheme: HTTP
             path: /healthz
             port: http
-          initialDelaySeconds: 10
-          periodSeconds: 30
+          initialDelaySeconds: 15
+          periodSeconds: 15
         readinessProbe:
           httpGet:
             scheme: HTTP
             path: /healthz
             port: http
-          initialDelaySeconds: 10
-          periodSeconds: 30
+          initialDelaySeconds: 15
+          periodSeconds: 15
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+            - ALL
 

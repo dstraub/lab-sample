@@ -5,7 +5,7 @@ metadata:
   labels:
     app: webserver
 spec:
-  host: do180.apps.eu410.prod.nextcle.com
+  host: test.cluster.straubcloud.de
   to:
     kind: Service
     name: webserver

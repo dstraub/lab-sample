@@ -5,7 +5,7 @@ metadata:
   labels:
     app: webserver
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: webserver
@@ -16,7 +16,13 @@ spec:
     spec:
       containers:
       - name: webserver
-        image: quay.io/danielstraub/webserver:do180
+        image: quay.io/danielstraub/webserver:persistence
+        imagePullPolicy: Always
+        env:
+        - name: POD_NAME
+          valueFrom:
+           fieldRef:
+            fieldPath: metadata.name
         ports:
         - containerPort: 8080
           name: http
@@ -40,7 +46,7 @@ spec:
             scheme: HTTP
             path: /healthz
             port: http
-          initialDelaySeconds: 10
+          initialDelaySeconds: 5
           periodSeconds: 10
         securityContext:
           allowPrivilegeEscalation: false
@@ -50,4 +56,17 @@ spec:
           capabilities:
             drop:
             - ALL
-
+        volumeMounts:
+        - name: webserver-conf
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        - name: webserver-log
+          mountPath: /var/log/nginx
+      volumes:
+      - name: webserver-conf
+        configMap:
+          name: webserver-conf
+      - name: webserver-log
+        persistentVolumeClaim:
+          claimName: webserver-log
+  

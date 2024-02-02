@@ -5,7 +5,7 @@ metadata:
   labels:
     app: webserver
 spec:
-  host: test.apps.ocp4.example.com
+  host: test.straubcloud.de
   to:
     kind: Service
     name: webserver

@@ -34,5 +34,5 @@ patches:
     metadata:
       name: webserver
     spec:
-      host: stage-test.cluster.straubcloud.de
+      host: stage-test.ocp.straubcloud.de
 

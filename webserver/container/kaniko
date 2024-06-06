@@ -1,0 +1,14 @@
+#!/bin/bash
+
+WEBSERVER_VERSION=$(git rev-parse --short HEAD)
+
+
+[[ -n $1 ]] && TAG=$1 || TAG=latest
+
+podman run -v $(pwd):/workspace -i -v ~/.docker/config.json:/kaniko/.docker/config.json gcr.io/kaniko-project/executor \
+  --destination registry.straubcloud.de/webserver:$TAG \
+  --build-arg WEBSERVER_VERSION=$WEBSERVER_VERSION \
+  --image-name-with-digest-file=/workspace/.image \
+  --cache=true --cache-copy-layers=true --cache-run-layers=true \
+  --reproducible \
+

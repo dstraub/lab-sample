@@ -1,0 +1,15 @@
+schemaVersion: 2.2.0
+metadata:
+  name: webserver-container
+components:
+- name: webserver-image
+  image:
+    imageName: registry.straubcloud.de/webserver
+    dockerfile:
+      uri: ./Dockerfile
+      buildContext: ${PROJECTS_ROOT}
+- name: foo
+  container:
+    image: foo
+commands: []
+

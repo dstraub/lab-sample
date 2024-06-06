@@ -1,0 +1,10 @@
+#!/bin/bash
+
+CONTAINER=$(buildah from registry.redhat.io/rhel9/buildah)
+FS_ROOT=$(buildah mount $CONTAINER)
+
+mkdir $FS_ROOT/root/.docker
+
+buildah commit --quiet --rm --squash $CONTAINER rhel9-buildah
+
+podman push rhel9-buildah registry.straubcloud.de/rhel9/buildah

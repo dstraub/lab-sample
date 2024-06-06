@@ -1,16 +1,14 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: webserver
-  labels:
-    app: webserver
+  name: pipeline-trigger
 spec:
-  host: webserver.apps.ocp4.example.com
+  host: pipeline-trigger.ocp.straubcloud.de
   to:
     kind: Service
-    name: webserver
+    name: el-webserver-container
   port:
-    targetPort: http
+    targetPort: http-listener
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect

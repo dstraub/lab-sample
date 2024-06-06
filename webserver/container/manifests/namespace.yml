@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: images
+  labels:
+    ext-secret-registry-conf: "true"
+    ext-secret-ssh-dir: "true"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+imagePullSecrets:
+- name: registry-conf
+

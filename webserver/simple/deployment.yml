@@ -40,7 +40,7 @@ spec:
             scheme: HTTP
             path: /healthz
             port: http
-          initialDelaySeconds: 10
+          initialDelaySeconds: 5
           periodSeconds: 10
         securityContext:
           allowPrivilegeEscalation: false

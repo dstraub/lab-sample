@@ -1,0 +1,25 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+namespace: external-secrets
+
+resources:
+- rbac.yml
+- registry-conf.yml
+- ssh-dir.yml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+- name: registry-conf
+  files:
+  - .dockerconfigjson=.dockerconfig.json
+  - config.json=.dockerconfig.json
+  type: opaque
+- name: ssh-dir
+  files:
+  - id_rsa=.ssh/id_rsa
+  - config=.ssh/config 
+  type: opaque
+

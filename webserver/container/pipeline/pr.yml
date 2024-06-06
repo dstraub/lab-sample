@@ -1,0 +1,33 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: webserver-container-run-
+  namespace: images
+spec:
+  params:
+  - name: GIT_REPO
+    value: git@github.com:dstraub/lab-sample.git
+  - name: GIT_REVISION
+    value: main
+  - name: IMAGE_NAME
+    value: registry.straubcloud.de/webserver:latest
+
+  pipelineRef:
+    name: webserver-container
+
+  workspaces:
+  - name: ssh-dir
+    secret:
+      secretName: ssh-dir
+  - name: dockerconfig
+    secret:
+      secretName: registry-conf
+  - name: shared
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteMany
+        resources:
+          requests:
+            storage: 5Gi
+

@@ -1,0 +1,124 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: webserver-container
+spec:
+
+  workspaces:
+  - name: shared
+  - name: ssh-dir
+  - name: dockerconfig
+
+  params:
+  - name: IMAGE_NAME
+    type: string
+    default: registry.straubcloud.de/webserver
+  - name: GIT_REPO
+    type: string
+    default: git@github.com:dstraub/lab-sample.git
+  - name: GIT_REVISION
+    type: string
+    default: main
+  - name: GIT_SHORT_REVISION
+    type: string
+    default: "not provided"
+  - name: OVERLAY
+    type: string
+    default: test
+
+  tasks:
+  - name: fetch-repo
+    taskRef:
+      name: git-clone
+      kind: ClusterTask
+    params:
+    - name: url
+      value: $(params.GIT_REPO)
+    - name: revision
+      value: $(params.GIT_REVISION)
+    - name: subdirectory
+      value: ""
+    - name: verbose
+      value: "false"
+    workspaces:
+    - name: output
+      workspace: shared
+    - name: ssh-directory
+      workspace: ssh-dir
+
+  - name: build-image
+    params:
+    - name: IMAGE
+      value: $(params.IMAGE_NAME)
+    - name: CONTEXT
+      value: webserver/container
+    - name: BUILD_EXTRA_ARGS
+      value: --build-arg=WEBSERVER_VERSION=$(params.GIT_SHORT_REVISION) --build-arg=COMMIT=$(tasks.fetch-repo.results.commit)
+    taskRef:
+      name: buildah
+      kind: ClusterTask
+    workspaces:
+    - name: source
+      workspace: shared
+    - name: dockerconfig
+      workspace: dockerconfig
+
+  - name: update-image
+    params:
+    - name: IMAGE_NAME
+      value: $(params.IMAGE_NAME)@$(tasks.build-image.results.IMAGE_DIGEST)
+    - name: CONTAINER_NAME
+      value: webserver
+    - name: OVERLAY
+      value: $(params.OVERLAY)
+    taskSpec:
+      params:
+      - name: IMAGE_NAME
+        type: string
+      - name: CONTAINER_NAME
+        type: string
+      - name: OVERLAY
+        type: string
+      - name: DEBUG
+        type: string
+        default: "true"
+      results:
+      - name: CHANGED
+        type: string
+      steps:
+      - name: kustomize
+        image: registry.k8s.io/kustomize/kustomize:v5.0.0
+        script: |
+          cd $(workspaces.source.path)/webserver/kustomize/overlays/$(params.OVERLAY)
+          kustomize edit set image $(params.CONTAINER_NAME)=$(params.IMAGE_NAME)
+          [[ "$(params.DEBUG)" == "true" ]] && cat kustomization.yml || true
+          echo webserver/kustomize/overlays/$(params.OVERLAY)/kustomization.yml | tee $(results.CHANGED.path)
+      workspaces:
+      - name: source
+        mountPath: /workspace
+    workspaces:
+    - name: source
+      workspace: shared
+
+  - name: commit-changes
+    params:
+    - name: GIT_USER_NAME
+      value: pipeline
+    - name: GIT_USER_EMAIL
+      value: pipeline@openshift
+    - name: GIT_SCRIPT
+      value: |
+        git config --global --add safe.directory /workspace/source
+        git commit -m "pipeline update" $(tasks.update-image.results.CHANGED)
+        git push origin HEAD:main
+    - name: VERBOSE
+      value: "true" 
+    taskRef:
+      name: git-cli
+      kind: ClusterTask
+    workspaces:
+    - name: source
+      workspace: shared
+    - name: ssh-directory
+      workspace: ssh-dir
+

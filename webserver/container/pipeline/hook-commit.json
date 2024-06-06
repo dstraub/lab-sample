@@ -1,0 +1,115 @@
+{
+  "ref": "refs/heads/main",
+  "before": "12f99ba24a534c8277e7e3b1ceada18f57c6f514",
+  "after": "2145a24216afe973d1fc6f6e215a3858acae18d8",
+  "repository": {
+    "id": 563579766,
+    "node_id": "R_kgDOIZeLdg",
+    "name": "lab-sample",
+    "full_name": "dstraub/lab-sample",
+    "private": true,
+    "owner": {
+      "name": "dstraub",
+      "email": "ds@ctrlaltdel.de",
+      "login": "dstraub",
+      "url": "https://api.github.com/users/dstraub"
+    },
+    "html_url": "https://github.com/dstraub/lab-sample",
+    "description": null,
+    "fork": false,
+    "url": "https://github.com/dstraub/lab-sample",
+    "forks_url": "https://api.github.com/repos/dstraub/lab-sample/forks",
+    "keys_url": "https://api.github.com/repos/dstraub/lab-sample/keys{/key_id}",
+    "git_url": "git://github.com/dstraub/lab-sample.git",
+    "ssh_url": "git@github.com:dstraub/lab-sample.git",
+    "clone_url": "https://github.com/dstraub/lab-sample.git",
+    "svn_url": "https://github.com/dstraub/lab-sample",
+    "homepage": null,
+    "size": 6330,
+    "stargazers_count": 0,
+    "web_commit_signoff_required": false,
+    "topics": [
+
+    ],
+    "visibility": "private",
+    "forks": 0,
+    "open_issues": 0,
+    "watchers": 0,
+    "default_branch": "main",
+    "stargazers": 0,
+    "master_branch": "main"
+  },
+  "pusher": {
+    "name": "dstraub",
+    "email": "ds@ctrlaltdel.de"
+  },
+  "sender": {
+    "login": "dstraub",
+    "id": 769889,
+    "node_id": "MDQ6VXNlcjc2OTg4OQ==",
+    "site_admin": false
+  },
+  "created": false,
+  "deleted": false,
+  "forced": false,
+  "base_ref": null,
+  "compare": "https://github.com/dstraub/lab-sample/compare/12f99ba24a53...2145a24216af",
+  "commits": [
+    {
+      "id": "2145a24216afe973d1fc6f6e215a3858acae18d8",
+      "tree_id": "a27d5b22433e14c6b43c8f77e3714717569fb084",
+      "distinct": true,
+      "message": "wip",
+      "timestamp": "2024-06-26T23:04:43+02:00",
+      "url": "https://github.com/dstraub/lab-sample/commit/2145a24216afe973d1fc6f6e215a3858acae18d8",
+      "author": {
+        "name": "daniel",
+        "email": "ds@ctrlaltdel.de",
+        "username": "dstraub"
+      },
+      "committer": {
+        "name": "daniel",
+        "email": "ds@ctrlaltdel.de",
+        "username": "dstraub"
+      },
+      "added": [
+        "webserver/container/pipeline/event-listener.yml",
+        "webserver/container/pipeline/trigger-template.yml"
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+
+      ]
+    }
+  ],
+  "head_commit": {
+    "id": "2145a24216afe973d1fc6f6e215a3858acae18d8",
+    "tree_id": "a27d5b22433e14c6b43c8f77e3714717569fb084",
+    "distinct": true,
+    "message": "wip",
+    "timestamp": "2024-06-26T23:04:43+02:00",
+    "url": "https://github.com/dstraub/lab-sample/commit/2145a24216afe973d1fc6f6e215a3858acae18d8",
+    "author": {
+      "name": "daniel",
+      "email": "ds@ctrlaltdel.de",
+      "username": "dstraub"
+    },
+    "committer": {
+      "name": "daniel",
+      "email": "ds@ctrlaltdel.de",
+      "username": "dstraub"
+    },
+    "added": [
+      "webserver/container/pipeline/event-listener.yml",
+      "webserver/container/pipeline/trigger-template.yml"
+    ],
+    "removed": [
+
+    ],
+    "modified": [
+
+    ]
+  }
+}

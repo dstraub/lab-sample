@@ -1,0 +1,7 @@
+spec:
+ accessModes:
+ - ReadWriteMany
+ resources:
+   requests:
+     storage: 5Gi
+

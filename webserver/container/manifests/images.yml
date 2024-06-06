@@ -1,0 +1,18 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: webserver
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+  - name: latest
+    from:
+      kind: DockerImage
+      name: registry.straubcloud.de/webserver:latest
+    importPolicy:
+      importMode: Legacy
+      scheduled: true
+    referencePolicy:
+      type: Source
+

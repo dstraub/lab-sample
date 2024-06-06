@@ -17,7 +17,7 @@ starterProjects:
       remotes:
         origin: "https://github.com/odo-devfiles/springboot-ex.git"
 components:
-  - name: tools-${USER}
+  - name: tools
     container:
       image: registry.access.redhat.com/ubi9/openjdk-17:1.17-1.1705573248
       command: ["tail", "-f", "/dev/null"]

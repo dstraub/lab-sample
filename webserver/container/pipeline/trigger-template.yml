@@ -1,0 +1,46 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: webserver-container
+spec:
+  params:
+  - name: git-rev
+  - name: git-short-rev
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1
+    kind: PipelineRun
+    metadata:
+      generateName: webserver-container-run-
+      labels:
+        tekton.dev/pipeline: webserver-container
+      namespace: images
+    spec:
+      params:
+      - name: IMAGE_NAME
+        value: registry.straubcloud.de/webserver
+      - name: GIT_REPO
+        value: git@github.com:dstraub/lab-sample.git
+      - name: GIT_REVISION
+        value: $(tt.params.git-rev)
+      - name: GIT_SHORT_REVISION
+        value: $(tt.params.git-short-rev)
+      - name: OVERLAY
+        value: test
+      pipelineRef:
+        name: webserver-container
+      workspaces:
+      - name: shared
+        volumeClaimTemplate:
+          spec:
+            accessModes:
+            - ReadWriteMany
+            resources:
+              requests:
+                storage: 5Gi
+      - name: ssh-dir
+        secret:
+          secretName: ssh-dir
+      - name: dockerconfig
+        secret:
+          secretName: registry-conf
+

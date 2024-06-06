@@ -1,0 +1,28 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: webserver-container
+spec:
+  serviceAccountName: pipeline
+  triggers:
+  - name: github
+    interceptors:
+    - ref:
+        name: cel
+      params:
+      - name: filter
+        value: body.commits[0].author.name != 'pipeline'
+      - name: overlays
+        value:
+        - key: git_short_rev
+          expression: body.head_commit.id.truncate(7)
+        - key: git_rev
+          expression: body.head_commit.id
+    bindings:
+    - name: git-rev
+      value: $(extensions.git_rev)
+    - name: git-short-rev
+      value: $(extensions.git_short_rev)
+    template:
+      ref: webserver-container
+

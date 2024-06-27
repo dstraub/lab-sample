@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
-  name: webserver-container
+  name: webserver-build
 spec:
   params:
   - name: git-rev
@@ -10,10 +10,10 @@ spec:
   - apiVersion: tekton.dev/v1
     kind: PipelineRun
     metadata:
-      generateName: webserver-container-run-
+      generateName: webserver-build-run-
       labels:
-        tekton.dev/pipeline: webserver-container
-      namespace: images
+        tekton.dev/pipeline: webserver-build
+      namespace: webserver-build
     spec:
       params:
       - name: IMAGE_NAME
@@ -27,7 +27,7 @@ spec:
       - name: STAGE
         value: test
       pipelineRef:
-        name: webserver-container
+        name: webserver-build
       workspaces:
       - name: shared
         volumeClaimTemplate:

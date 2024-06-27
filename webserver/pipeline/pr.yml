@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
-  generateName: webserver-container-run-
+  generateName: webserver-build-run-
   namespace: webserver-build
 spec:
   params:
@@ -13,7 +13,7 @@ spec:
     value: registry.straubcloud.de/webserver
 
   pipelineRef:
-    name: webserver-container
+    name: webserver-build
 
   workspaces:
   - name: ssh-dir

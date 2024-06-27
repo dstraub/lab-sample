@@ -1,12 +1,12 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: pipeline-trigger
+  name: webserver-build
 spec:
   host: webserver-build.ocp.straubcloud.de
   to:
     kind: Service
-    name: el-webserver-container
+    name: el-webserver-build
   port:
     targetPort: http-listener
   tls:

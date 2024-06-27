@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     path: webserver/helm/chart
-    repoURL: git@github.com:dstraub/do180-sample.git
+    repoURL: git@github.com:dstraub/lab-sample.git
     targetRevision: HEAD
     helm:
       releaseName: webserver

@@ -21,8 +21,8 @@ spec:
     default: main
   - name: GIT_SHORT_REVISION
     type: string
-    default: "not provided"
-  - name: OVERLAY
+    default: "not_provided"
+  - name: STAGE
     type: string
     default: test
 
@@ -36,8 +36,6 @@ spec:
       value: $(params.GIT_REPO)
     - name: revision
       value: $(params.GIT_REVISION)
-    - name: subdirectory
-      value: ""
     - name: verbose
       value: "false"
     workspaces:
@@ -69,15 +67,15 @@ spec:
       value: $(params.IMAGE_NAME)@$(tasks.build-image.results.IMAGE_DIGEST)
     - name: CONTAINER_NAME
       value: webserver
-    - name: OVERLAY
-      value: $(params.OVERLAY)
+    - name: STAGE
+      value: $(params.STAGE)
     taskSpec:
       params:
       - name: IMAGE_NAME
         type: string
       - name: CONTAINER_NAME
         type: string
-      - name: OVERLAY
+      - name: STAGE
         type: string
       - name: DEBUG
         type: string
@@ -89,10 +87,10 @@ spec:
       - name: kustomize
         image: registry.k8s.io/kustomize/kustomize:v5.0.0
         script: |
-          cd $(workspaces.source.path)/webserver/kustomize/overlays/$(params.OVERLAY)
+          cd $(workspaces.source.path)/webserver/kustomize/overlays/$(params.STAGE)
           kustomize edit set image $(params.CONTAINER_NAME)=$(params.IMAGE_NAME)
           [[ "$(params.DEBUG)" == "true" ]] && cat kustomization.yml || true
-          echo webserver/kustomize/overlays/$(params.OVERLAY)/kustomization.yml | tee $(results.CHANGED.path)
+          echo webserver/kustomize/overlays/$(params.STAGE)/kustomization.yml | tee $(results.CHANGED.path)
       workspaces:
       - name: source
         mountPath: /workspace
@@ -112,7 +110,7 @@ spec:
         git commit -m "pipeline update" $(tasks.update-image.results.CHANGED)
         git push origin HEAD:main
     - name: VERBOSE
-      value: "true" 
+      value: "false" 
     taskRef:
       name: git-cli
       kind: ClusterTask
@@ -121,4 +119,35 @@ spec:
       workspace: shared
     - name: ssh-directory
       workspace: ssh-dir
+
+  - name: trigger-argo
+    runAfter: 
+    - commit-changes
+    params:
+    - name: application
+      value: stage-$(params.STAGE)
+    - name: timeout 
+      value: "180"
+    taskSpec:
+      params:
+      - name: application
+        type: string
+      - name: timeout 
+        type: string
+        default: "60"
+      - name: revision
+        type: string
+        default: HEAD
+      stepTemplate:
+        envFrom:
+        - secretRef:
+            name: gitops-admin
+      steps:
+      - image: quay.io/argoproj/argocd
+        script: |
+          yes | argocd login "$ARGOCD_SERVER" --username="$ARGOCD_USERNAME" --password="$ARGOCD_PASSWORD"
+          argocd app sync $(params.application) --revision $(params.revision) --timeout=$(params.timeout)
+          argocd app wait $(params.application) --sync  --timeout=$(params.timeout)
+          argocd app wait $(params.application) --health  --timeout=$(params.timeout)
+      
 

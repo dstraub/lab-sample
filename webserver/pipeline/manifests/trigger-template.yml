@@ -24,7 +24,7 @@ spec:
         value: $(tt.params.git-rev)
       - name: GIT_SHORT_REVISION
         value: $(tt.params.git-short-rev)
-      - name: OVERLAY
+      - name: STAGE
         value: test
       pipelineRef:
         name: webserver-container

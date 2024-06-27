@@ -1,14 +1,15 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 
-namespace: images
+namespace: webserver-build
 
 resources:
+- namespace.yml
 - pipeline.yml
 - event-listener.yml
 - trigger-template.yml
 - route.yml
 
 commonLabels:
-  app: webserver-images
+  app: webserver-build
 

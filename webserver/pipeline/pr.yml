@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   generateName: webserver-container-run-
-  namespace: images
+  namespace: webserver-build
 spec:
   params:
   - name: GIT_REPO
@@ -10,7 +10,7 @@ spec:
   - name: GIT_REVISION
     value: main
   - name: IMAGE_NAME
-    value: registry.straubcloud.de/webserver:latest
+    value: registry.straubcloud.de/webserver
 
   pipelineRef:
     name: webserver-container
@@ -29,5 +29,5 @@ spec:
         - ReadWriteMany
         resources:
           requests:
-            storage: 5Gi
+            storage: 1Gi
 

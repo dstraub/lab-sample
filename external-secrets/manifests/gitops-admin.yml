@@ -1,0 +1,26 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterExternalSecret
+metadata:
+  name: gitops-admin
+spec:
+  refreshInterval: 1m
+  namespaceSelector:
+    matchLabels:
+      ext-secret-gitops-admin: "true"
+  externalSecretSpec:
+    secretStoreRef:
+      kind: ClusterSecretStore
+      name: openshift-gitops
+    target:
+      name: gitops-admin
+      creationPolicy: Owner
+      template:
+        engineVersion: v2
+        data:
+          ARGOCD_SERVER: openshift-gitops-server.openshift-gitops.svc.cluster.local
+          ARGOCD_USERNAME: admin
+          ARGOCD_PASSWORD: '{{ index . "admin.password" }}'
+    dataFrom:
+    - extract:
+        key: openshift-gitops-cluster
+

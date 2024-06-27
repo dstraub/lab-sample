@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set +e
+oc get pr -o name | xargs oc delete 2>/dev/null 
+
+set -e
+oc apply -f manifests/pipeline.yml 
+oc create -f pr.yml 
+
+oc get tr -w
+
+

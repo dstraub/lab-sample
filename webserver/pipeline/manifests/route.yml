@@ -3,7 +3,7 @@ kind: Route
 metadata:
   name: pipeline-trigger
 spec:
-  host: pipeline-trigger.ocp.straubcloud.de
+  host: webserver-build.ocp.straubcloud.de
   to:
     kind: Service
     name: el-webserver-container

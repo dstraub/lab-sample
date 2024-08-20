@@ -10,9 +10,9 @@ commonLabels:
   app.kubernetes.io/name: webserver
 
 images:
-- digest: sha256:e62978789ee458fa76dbfa94244e20ddca5fa9645a0892c64509f16bfb91f7a3
-  name: webserver
-  newName: registry.straubcloud.de/webserver
+- name: webserver
+  newName: quay.io/danielstraub/webserver
+  newTag: "2.1"
 
 configMapGenerator:
 - files:
@@ -29,20 +29,9 @@ patches:
   target:
     kind: Deployment
 - patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: stage-test.k8s.straubcloud.de
+  target:
     kind: Ingress
-    apiVersion: networking.k8s.io/v1
-    metadata:
-      name: webserver
-    spec:
-      rules:
-      - host: stage-test.ocp.straubcloud.de
-        http:
-          paths:
-          - pathType: Prefix
-            path: /
-            backend:
-              service:
-                name: webservice
-                port:
-                  number: 80
 

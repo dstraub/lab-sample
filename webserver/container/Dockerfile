@@ -9,7 +9,7 @@ LABEL webserver.version=$WEBSERVER_VERSION
 
 RUN dnf install -qy $PACKAGES && \
     rm -rf /usr/share/nginx/html/* && \
-    chmod 0775 /var/log/nginx /usr/share/nginx/html && \
+    chmod -R 0775 /var/log/nginx /usr/share/nginx && \
     dnf clean -q all
 
 COPY nginx.conf /etc/nginx/nginx.conf

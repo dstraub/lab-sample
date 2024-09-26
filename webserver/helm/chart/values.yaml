@@ -8,7 +8,7 @@ image:
   repository: quay.io/danielstraub/webserver
 
 route:
-  domain: cluster.straubcloud.de
+  domain: ocp.straubcloud.de
 
 resources:
   limits:

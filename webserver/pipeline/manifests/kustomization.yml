@@ -9,6 +9,8 @@ resources:
 - event-listener.yml
 - trigger-template.yml
 - route.yml
+- update-image.yml
+- trigger-argo.yml
 
 commonLabels:
   app: webserver-build

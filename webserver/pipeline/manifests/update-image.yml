@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: update-image
+spec:
+  params:
+  - name: IMAGE_NAME
+    type: string
+  - name: CONTAINER_NAME
+    type: string
+  - name: STAGE
+    type: string
+  - name: DEBUG
+    type: string
+    default: "true"
+
+  results:
+  - name: CHANGED
+    type: string
+
+  steps:
+  - name: kustomize
+    image: registry.k8s.io/kustomize/kustomize:v5.0.0
+    script: |
+      cd $(workspaces.source.path)/webserver/kustomize/overlays/$(params.STAGE)
+      kustomize edit set image $(params.CONTAINER_NAME)=$(params.IMAGE_NAME)
+      [[ "$(params.DEBUG)" == "true" ]] && cat kustomization.yml || true
+      echo webserver/kustomize/overlays/$(params.STAGE)/kustomization.yml | tee $(results.CHANGED.path)
+
+  workspaces:
+  - name: source
+    mountPath: /workspace
+
+

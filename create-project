@@ -12,5 +12,8 @@ for MODE in audit enforce warn;do
   oc label namespace $1 pod-security.kubernetes.io/$MODE=baseline  --overwrite 1>/dev/null
 done
 
+oc create -n $1 secret generic registry --type kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson=.docker/config.json
+oc patch -n $1 sa default -p '{"imagePullSecrets": [ {"name": "registry" } ] }'
+
 echo "Project $1 created"
 

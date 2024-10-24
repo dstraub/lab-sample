@@ -25,7 +25,7 @@ patches:
       path: /spec/template/spec/containers/0/env
       value:
       - name: COURSE
-        value: DO288-Prod
+        value: DO180-Prod
   target:
     kind: Deployment
 - patch: |-

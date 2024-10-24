@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: stage-prod
-  namespace: openshift-gitops
+  namespace: gitops
 spec:
   destination:
     namespace: stage-prod

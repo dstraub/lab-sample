@@ -1,0 +1,11 @@
+#!/bin/bash
+
+ROUTE=$1
+CURRENT=$(oc get route $ROUTE -o jsonpath='{.spec.to.name}')
+
+[[ $CURRENT =~ .*-blue$ ]] && TARGET=${CURRENT/blue/green} || TARGET=${CURRENT/green/blue}
+
+oc patch route $ROUTE -p "{\"spec\":{\"to\":{\"name\":\"$TARGET\"}}}" -o jsonpath='{.spec.to.name}'
+
+echo
+

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver-green
+  labels:
+    app: webserver
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: webserver
+      color: green
+  template:
+    metadata:
+      labels:
+        app: webserver
+        color: green
+    spec:
+      containers:
+      - name: webserver
+        image: registry.straubcloud.de/webserver:v2
+        env:
+        - name: COURSE
+          value: DO288
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webserver-green
+  labels:
+    app: webserver
+spec:
+  selector:
+    app: webserver
+    color: green
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+

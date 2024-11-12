@@ -1,0 +1,24 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: webserver
+  annotations:
+    haproxy.router.openshift.io/balance: roundrobin
+  labels:
+    app: webserver
+spec:
+  host: webserver.ocp.straubcloud.de
+  to:
+    kind: Service
+    name: webserver-a
+#    weight: 198
+#  alternateBackends:
+#  - kind: Service
+#    name: webserver-b
+#    weight: 2      
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+

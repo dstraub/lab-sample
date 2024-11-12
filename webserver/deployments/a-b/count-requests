@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for TARGET in a b;do
+ POD=$(oc get pods -l target=$TARGET -o name)
+ echo "Target $TARGET: $(oc logs $POD | grep -c GET)"
+done

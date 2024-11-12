@@ -5,7 +5,7 @@ fullnameOverride: "webserver"
 replicaCount: 1
 
 image:
-  repository: quay.io/danielstraub/webserver
+  repository: registry.straubcloud.de/webserver
 
 route:
   domain: ocp.straubcloud.de

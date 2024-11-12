@@ -2,3 +2,4 @@
 .image
 .dockerconfig.json
 .ssh
+odo-sample/.odo/*

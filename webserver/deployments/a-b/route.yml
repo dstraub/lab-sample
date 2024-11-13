@@ -11,11 +11,11 @@ spec:
   to:
     kind: Service
     name: webserver-a
-#    weight: 198
-#  alternateBackends:
-#  - kind: Service
-#    name: webserver-b
-#    weight: 2      
+    weight: 198
+  alternateBackends:
+  - kind: Service
+    name: webserver-b
+    weight: 2      
   port:
     targetPort: http
   tls:

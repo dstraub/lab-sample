@@ -9,12 +9,13 @@ spec:
       serviceAccountName: do180
       containers:
       - name: vault
-        image: quay.io/danielstraub/vault
+        image: registry.straubcloud.de/vault
         command:
         - vault
         args: 
         - server
         - -config=/etc/vault/vault.conf
+        - -dev
         env:
         - name: VAULT_LOG_LEVEL
           value: info

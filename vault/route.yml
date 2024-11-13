@@ -3,7 +3,7 @@ kind: Route
 metadata:
   name: vault
 spec:
-  host: vault.apps.ocp4.example.com
+  host: vault.straubcloud.de
   to:
     kind: Service
     name: vault

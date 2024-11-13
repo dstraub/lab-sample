@@ -10,7 +10,7 @@ spec:
       serviceAccountName: do180
       initContainers:
       - name: token
-        image: quay.io/danielstraub/vault
+        image: registry.straubcloud.de/vault
         command:
         - bash
         args: 
@@ -24,7 +24,7 @@ spec:
           mountPath: /data
       containers:
       - name: test
-        image: quay.io/danielstraub/vault
+        image: registry.straubcloud.de/vault
         command:
         - bash
         args: 

@@ -10,7 +10,7 @@ spec:
       serviceAccountName: do180
       initContainers:
       - name: agent
-        image: quay.io/danielstraub/vault
+        image: registry.straubcloud.de/vault
         command:
         - vault
         args: 
@@ -29,7 +29,7 @@ spec:
           readonly: true
       containers:
       - name: test
-        image: quay.io/danielstraub/vault
+        image: registry.straubcloud.de/vault
         command:
         - bash
         args: 

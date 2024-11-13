@@ -2,17 +2,19 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: do180
+imagePullSecrets:
+- name: registry-conf
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: vault
+  name: do180
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: system:auth-delegator
 subjects:
 - kind: ServiceAccount
-  namespace: do180
+  namespace: vault
   name: do180
 

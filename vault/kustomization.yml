@@ -10,7 +10,7 @@ resources:
 - pvc.yml
 - sa.yml
 
-namespace: do180
+namespace: vault
 
 commonLabels:
   app.kubernetes.io/instance: vault

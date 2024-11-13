@@ -10,14 +10,14 @@ commonLabels:
   app.kubernetes.io/name: webserver
 
 images:
-- name: webserver
-  newName: quay.io/danielstraub/webserver
-  newTag: "2.0"
+- digest: sha256:49297378194c3c41334a045e987be1890e290aa0090ab148edeb0927acc5befc
+  name: webserver
+  newName: registry.straubcloud.de/webserver
 
 configMapGenerator:
-- name: webserver
-  files:
+- files:
   - env.properties
+  name: webserver
 
 patches:
 - patch: |-
@@ -35,4 +35,3 @@ patches:
       name: webserver
     spec:
       host: stage-prod.ocp.straubcloud.de
-

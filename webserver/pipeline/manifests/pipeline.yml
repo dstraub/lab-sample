@@ -24,7 +24,7 @@ spec:
     default: "not_provided"
   - name: STAGE
     type: string
-    default: test
+    default: prod
 
   tasks:
   - name: fetch-repo
@@ -52,6 +52,8 @@ spec:
       value: webserver/container
     - name: BUILD_EXTRA_ARGS
       value: --build-arg=WEBSERVER_VERSION=$(params.GIT_SHORT_REVISION) --build-arg=COMMIT=$(tasks.fetch-repo.results.commit)
+    - name: DOCKERFILE
+      value: ./Containerfile
     taskRef:
       name: buildah
       kind: ClusterTask

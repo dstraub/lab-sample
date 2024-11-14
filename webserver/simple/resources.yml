@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: webserver
+  namespace: webserver
+spec:
+  limits:
+    - type: Container
+#      default:
+#        memory: 512M
+#        cpu: 100m
+#      defaultRequest:
+#        memory: 256M
+#        cpu: 100m
+      min:
+        cpu: 0m
+        memory: 100M
+      max:
+        cpu: 200M
+        memory: 2024M
+      maxLimitRequestRatio:
+        cpu: 1
+        memory: 1.25
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: webserver
+  namepsace: webserver
+spec:
+  hard:
+    cpu: 5000m
+    memory: 200Gi
+

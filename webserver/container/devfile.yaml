@@ -6,7 +6,7 @@ components:
   image:
     imageName: registry.straubcloud.de/webserver
     dockerfile:
-      uri: ./Dockerfile
+      uri: ./Containerfile
       buildContext: ${PROJECTS_ROOT}
 - name: foo
   container:

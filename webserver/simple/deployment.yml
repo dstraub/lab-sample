@@ -22,9 +22,9 @@ spec:
           name: http
           protocol: TCP
         resources:
-#          requests:
-#            memory: 64Mi
-#            cpu: 50m
+          requests:
+            memory: 128Mi
+            cpu: 100m
           limits:
             memory: 128Mi
             cpu: 100m        
@@ -34,14 +34,14 @@ spec:
             path: /healthz
             port: http
           initialDelaySeconds: 10
-          periodSeconds: 20
+          periodSeconds: 10
         readinessProbe:
           httpGet:
             scheme: HTTP
             path: /healthz
             port: http
           initialDelaySeconds: 10
-          periodSeconds: 20
+          periodSeconds: 10
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true

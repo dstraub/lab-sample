@@ -58,10 +58,13 @@ metadata:
   labels:
     app: webserver
 spec:
+  host: webserver.ocp.straubcloud.de
   to:
     kind: Service
     name: webserver
   port:
     targetPort: http
-
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
 

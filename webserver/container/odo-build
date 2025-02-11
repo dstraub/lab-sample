@@ -1,4 +1,0 @@
-#!/bin/bash
-
-ODO_IMAGE_BUILD_ARGS="--build-arg=WEBSERVER_VERSION=$(git rev-parse --short HEAD)" odo build-images --push
-

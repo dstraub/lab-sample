@@ -8,8 +8,16 @@ components:
     dockerfile:
       uri: ./Containerfile
       buildContext: ${PROJECTS_ROOT}
+- name: webserver-deployment
+  openshift:
+    uri: manifests/webserver.yml
 - name: foo
   container:
     image: foo
-commands: []
-
+commands: 
+- id: deploy
+  apply: 
+    component: webserver-deployment
+    group:
+      kind: deploy
+      isDefault: true

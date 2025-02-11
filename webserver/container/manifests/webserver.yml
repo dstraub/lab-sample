@@ -2,6 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webserver
+  annotations:
+    image.openshift.io/triggers: |
+      [
+       {
+         "from": {
+           "kind": "ImageStreamTag", 
+           "name": "webserver-remote:latest" 
+         },
+         "fieldPath": "spec.template.spec.containers[0].image", 
+         "paused": false 
+       }
+      ]
   labels:
     app: webserver
 spec:
@@ -16,7 +28,7 @@ spec:
     spec:
       containers:
       - name: webserver
-        image: webserver
+        image: webserver-remote
         ports:
         - containerPort: 8080
           name: http
@@ -58,7 +70,7 @@ metadata:
   labels:
     app: webserver
 spec:
-  host: webserver-images.ocp.straubcloud.de
+  host: webserver-build.ocp.straubcloud.de
   to:
     kind: Service
     name: webserver

@@ -1,0 +1,31 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: webserver-build
+  name: webserver
+spec:
+  failedBuildsHistoryLimit: 0
+  successfulBuildsHistoryLimit: 2
+  strategy:
+    type: Docker
+  source:
+    git:
+      uri: git@github.com:dstraub/lab-sample.git
+    type: Git
+    contextDir: webserver/container
+    sourceSecret:
+      name: ssh-dir
+  output:
+    pushSecret:
+      name: registry-conf
+    to:
+      kind: DockerImage
+      name: registry.straubcloud.de/webserver
+#      kind: ImageStreamTag
+#      name: webserver:latest
+  triggers:
+  - type: GitHub
+    github:
+      secretReference: 
+        name: github    

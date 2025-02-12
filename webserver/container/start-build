@@ -1,0 +1,3 @@
+#!/bin/bash
+oc start-build webserver --follow --build-arg=WEBSERVER_VERSION=$(git rev-parse --short HEAD)
+

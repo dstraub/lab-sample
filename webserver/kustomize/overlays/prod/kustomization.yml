@@ -11,7 +11,8 @@ commonLabels:
 
 images:
 - name: webserver
-  newName: registry.straubcloud.de/webserver:2.0
+  newName: registry.straubcloud.de/webserver
+  newTag: "2.0"
 
 configMapGenerator:
 - files:

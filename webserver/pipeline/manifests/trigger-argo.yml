@@ -20,6 +20,7 @@ spec:
   - image: quay.io/argoproj/argocd
     script: |
       yes | argocd login "$ARGOCD_SERVER" --username="$ARGOCD_USERNAME" --password="$ARGOCD_PASSWORD"
+      set -x
       argocd app sync $(params.application) --revision $(params.revision) --timeout=$(params.timeout)
       argocd app wait $(params.application) --sync  --timeout=$(params.timeout)
       argocd app wait $(params.application) --health  --timeout=$(params.timeout)

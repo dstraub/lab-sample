@@ -29,14 +29,20 @@ spec:
   tasks:
   - name: fetch-repo
     taskRef:
-      name: git-clone
-      kind: ClusterTask
+      resolver: cluster 
+      params:
+      - name: name
+        value: git-clone
+      - name: namespace
+        value: openshift-pipelines
+      - name: kind
+        value: task
     params:
-    - name: url
+    - name: URL
       value: $(params.GIT_REPO)
-    - name: revision
+    - name: REVISION
       value: $(params.GIT_REVISION)
-    - name: verbose
+    - name: VERBOSE
       value: "false"
     workspaces:
     - name: output
@@ -51,12 +57,18 @@ spec:
     - name: CONTEXT
       value: webserver/container
     - name: BUILD_EXTRA_ARGS
-      value: --build-arg=WEBSERVER_VERSION=$(params.GIT_SHORT_REVISION) --build-arg=COMMIT=$(tasks.fetch-repo.results.commit)
+      value: --build-arg=WEBSERVER_VERSION=$(params.GIT_SHORT_REVISION) --build-arg=COMMIT=$(tasks.fetch-repo.results.COMMIT)
     - name: DOCKERFILE
-      value: ./Containerfile
+      value: webserver/container/Dockerfile
     taskRef:
-      name: buildah
-      kind: ClusterTask
+      resolver: cluster 
+      params:
+      - name: name
+        value: buildah
+      - name: namespace
+        value: openshift-pipelines
+      - name: kind
+        value: task
     workspaces:
     - name: source
       workspace: shared
@@ -83,6 +95,8 @@ spec:
       value: pipeline
     - name: GIT_USER_EMAIL
       value: pipeline@openshift
+    - name: DELETE_EXISTING
+      value: "false"
     - name: GIT_SCRIPT
       value: |
         git config --global --add safe.directory /workspace/source
@@ -91,8 +105,14 @@ spec:
     - name: VERBOSE
       value: "false" 
     taskRef:
-      name: git-cli
-      kind: ClusterTask
+      resolver: cluster 
+      params:
+      - name: name
+        value: git-cli
+      - name: namespace
+        value: openshift-pipelines
+      - name: kind
+        value: task
     workspaces:
     - name: source
       workspace: shared

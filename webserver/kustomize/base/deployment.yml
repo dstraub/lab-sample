@@ -20,7 +20,6 @@ spec:
             scheme: HTTP
             path: /healthz
             port: http
-          initialDelaySeconds: 20
           periodSeconds: 10
           failureThreshold: 3
         readinessProbe:
@@ -28,7 +27,6 @@ spec:
             scheme: HTTP
             path: /healthz
             port: http
-          initialDelaySeconds: 20
           periodSeconds: 10
           failureThreshold: 3
         securityContext:

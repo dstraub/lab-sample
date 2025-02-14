@@ -10,7 +10,7 @@ commonLabels:
   app.kubernetes.io/name: webserver
 
 images:
-- digest: sha256:08173d5888b2b9d98d487e036196f887903894d5456b4fff952e70d7a247d98e
+- digest: sha256:82c9a4f90b1783f3bcfd95dba82a9f36caee9e62457ed6be31dc27e567ae9106
   name: webserver
   newName: registry.straubcloud.de/webserver
 

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: volume-1
+  labels:
+    app: volume-1
+spec:
+  accessModes:
+  - ReadWriteMany
+  volumeMode: Filesystem
+  capacity:
+    storage: 100Mi
+  nfs:
+    path: /srv/nfs/data/volume-1
+    server: 10.0.0.1
+  persistentVolumeReclaimPolicy: Retain
+

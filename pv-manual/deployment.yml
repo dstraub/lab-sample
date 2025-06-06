@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volume-test
+  labels:
+    app: volume-1
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: volume-test
+  template:
+    metadata:
+      labels:
+        app: volume-test
+    spec:
+      containers:
+      - name: toolbox
+        command:
+        - bash
+        - -c
+        - sleep infinity
+        image: quay.io/danielstraub/toolbox
+        terminationGracePeriodSeconds: 0
+        volumeMounts:
+        - name: volume-1
+          mountPath: /data
+      volumes:
+      - name: volume-1
+        persistentVolumeClaim:
+          claimName: volume-1
+

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set +xe
+WEIGHT_A=$1
+[[ -n $2 ]] && WEIGHT_B=$2 || WEIGHT_B=$((100 - $WEIGHT_A))
+
+oc patch route webserver -p "{\"spec\":{\"to\":{\"name\":\"webserver-a\",\"weight\": $WEIGHT_A},
+                                        \"alternateBackends\":[{\"name\":\"webserver-b\",\"weight\": $WEIGHT_B}]}}"
+oc get route webserver
+
+

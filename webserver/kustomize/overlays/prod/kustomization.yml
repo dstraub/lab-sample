@@ -10,7 +10,8 @@ commonLabels:
   app.kubernetes.io/name: webserver
 
 images:
-- name: webserver
+- digest: sha256:53627ffa6fa84567e4884ccc55a52e3126585d31b14731385100455c478ad81a
+  name: webserver
   newName: registry.straubcloud.de/webserver
 
 configMapGenerator:
@@ -24,7 +25,7 @@ patches:
       path: /spec/template/spec/containers/0/env
       value:
       - name: COURSE
-        value: DO180-Prod
+        value: DO288-Prod
   target:
     kind: Deployment
 - patch: |-

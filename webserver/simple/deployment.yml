@@ -14,9 +14,14 @@ spec:
       labels:
         app: webserver
     spec:
+      revisionHistoryLimit: 3
+      terminationGracePeriodSeconds: 1
       containers:
       - name: webserver
         image: quay.io/danielstraub/webserver:do180
+        env:
+        - name: COURSE
+          value: DO288
         ports:
         - containerPort: 8080
           name: http
@@ -33,15 +38,15 @@ spec:
             scheme: HTTP
             path: /healthz
             port: http
-          initialDelaySeconds: 10
-          periodSeconds: 10
+          initialDelaySeconds: 5
+          periodSeconds: 5
         readinessProbe:
           httpGet:
             scheme: HTTP
             path: /healthz
             port: http
-          initialDelaySeconds: 10
-          periodSeconds: 10
+          initialDelaySeconds: 5
+          periodSeconds: 5
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true

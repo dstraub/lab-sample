@@ -12,6 +12,6 @@ resources:
 - update-image.yml
 - trigger-argo.yml
 
-commonLabels:
+labels:
   app: webserver-build
 

@@ -6,12 +6,17 @@ resources:
 
 namespace: stage-prod
 
-commonLabels:
-  app.kubernetes.io/name: webserver
+labels:
+  - pairs:
+      app.kubernetes.io/name: webserver
+    includeSelectors: true
+
+generatorOptions:
+  labels:
+    app.kubernetes.io/name: webserver
 
 images:
-- digest: sha256:53627ffa6fa84567e4884ccc55a52e3126585d31b14731385100455c478ad81a
-  name: webserver
+- name: webserver
   newName: registry.straubcloud.de/webserver
 
 configMapGenerator:

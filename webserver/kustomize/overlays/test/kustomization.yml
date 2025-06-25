@@ -6,8 +6,14 @@ resources:
 
 namespace: stage-test
 
-commonLabels:
-  app.kubernetes.io/name: webserver
+labels:
+  - pairs:
+      app.kubernetes.io/name: webserver
+    includeSelectors: true
+
+generatorOptions:
+  labels:
+    app.kubernetes.io/name: webserver
 
 images:
 - name: webserver

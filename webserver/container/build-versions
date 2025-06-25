@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for VERSION in latest;do
+for VERSION in latest 1.0 1.1;do
   podman build --build-arg=WEBSERVER_VERSION=$VERSION -t registry.straubcloud.de/webserver:$VERSION .
   podman push registry.straubcloud.de/webserver:$VERSION
 done
